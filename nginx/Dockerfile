@@ -6,5 +6,16 @@ RUN apt-get update && \
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
-ADD ./nginx/nginx.conf  /etc/nginx/nginx.conf
-ADD ./nginx/rails.conf /etc/nginx/conf.d/default.conf
+
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+      openssl \
+      certbot \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./nginx/nginx.conf  /etc/nginx/nginx.conf
+COPY ./nginx/banana.conf /etc/nginx/conf.d/banana.conf
+
+COPY ./nginx/start.sh    /start.sh
+RUN chmod +x /start.sh
+CMD /start.sh

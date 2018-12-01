@@ -6,15 +6,22 @@ services:
       dockerfile: ./nginx/Dockerfile
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - app-data:/apps/banana-app
-      - letsencrypt:/etc/letsencrypt
+      - letsencrypt:/etc/letsencrypt/live
     depends_on:
       - app
+    environment:
+      - TZ: Asia/Tokyo
+      - LETSENCRYPT_HOSTS
+      - LETSENCRYPT_MAIL
+      - LETSENCRYPT_SUBJECT
   app:
     build:
       context: .
       dockerfile: ./rails/Dockerfile
+    #command: bundle exec puma -C config/puma.rb
     command: bundle exec puma -C config/puma_production.rb
     volumes:
       - app-data:/apps/banana-app
@@ -23,8 +30,8 @@ services:
     depends_on:
       - db
     environment:
-      - RAILS_LOG_TO_STDOUT=ON
-      - DB_HOST=db
+      - RAILS_LOG_TO_STDOUT: ON
+      - DB_HOST: db
       - RAILS_ENV
       - MYSQL_USER
       - MYSQL_PASSWORD
@@ -40,7 +47,7 @@ services:
       - MYSQL_ROOT_PASSWORD
       - MYSQL_USER
       - MYSQL_PASSWORD
-      - TZ="Asia/Tokyo"
+      - TZ: Asia/Tokyo
 volumes:
   app-data:
   db-data:
