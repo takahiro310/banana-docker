@@ -13,7 +13,7 @@ services:
     depends_on:
       - app
     environment:
-      - TZ: Asia/Tokyo
+      - TZ=Asia/Tokyo
       - LETSENCRYPT_HOSTS
       - LETSENCRYPT_MAIL
       - LETSENCRYPT_SUBJECT
@@ -30,8 +30,9 @@ services:
     depends_on:
       - db
     environment:
-      - RAILS_LOG_TO_STDOUT: ON
-      - DB_HOST: db
+      - RAILS_LOG_TO_STDOUT=ON
+      - SECRET_KEY_BASE
+      - DB_HOST=db
       - RAILS_ENV
       - MYSQL_USER
       - MYSQL_PASSWORD
@@ -47,7 +48,7 @@ services:
       - MYSQL_ROOT_PASSWORD
       - MYSQL_USER
       - MYSQL_PASSWORD
-      - TZ: Asia/Tokyo
+      - TZ=Asia/Tokyo
 volumes:
   app-data:
   db-data:

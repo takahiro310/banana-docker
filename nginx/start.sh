@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p /etc/letsencrypt/live
+
 for HOST in ${LETSENCRYPT_HOSTS}
 do
   if [ ! -d "/etc/letsencrypt/live/${HOST}" ]; then
